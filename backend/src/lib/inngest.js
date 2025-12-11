@@ -29,6 +29,8 @@ const syncUser = inngest.createFunction(
             image: newUser.profilePicture
         })
 
+console.log("User synced successfully", newUser)
+
     });
 
 const deleteUser = inngest.createFunction(
