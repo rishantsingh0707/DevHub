@@ -14,10 +14,4 @@ export const ENV = {
     CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
     INNGEST_SIGNING_KEY: process.env.INNGEST_SIGNING_KEY,
 
-
-    // frontend
-    VITE_API_URL: process.env.VITE_API_URL,
-    STREAM_API_KEY: process.env.STREAM_API_KEY,
-    CLERK_PUBLISHABLE_KEY: process.env.CLERK_PUBLISHABLE_KEY
-
 }
