@@ -13,6 +13,7 @@ export const chatClient = StreamChat.getInstance(apiKey, apiSecretkey);
 export const upsertStreamUser = async (userData) => {
     try {
         await chatClient.upsertUser(userData);
+        console.log("User upserted to Stream successfully",userData);
         return userData;
     } catch (error) {
         console.error("Error upserting Stream user:", error);
