@@ -2,9 +2,11 @@ import express from 'express';
 import { ENV } from '../lib/env.js';
 import { connectDB } from '../lib/db.js';
 import cors from 'cors';
+import { serve } from 'inngest/express';
 const app = express();
 
-console.log('Environment Variables:', ENV);
+
+app.use("/api/inngest",serve({client: inngest,functions}))
 
 app.get('/', (req, res) => {
   res.send('Hello, World!');
