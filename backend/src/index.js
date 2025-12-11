@@ -1,6 +1,7 @@
 import express from 'express';
 import { ENV } from '../lib/env.js';
 import { connectDB } from '../lib/db.js';
+import cors from 'cors';
 const app = express();
 
 console.log('Environment Variables:', ENV);
@@ -9,6 +10,14 @@ app.get('/', (req, res) => {
   res.send('Hello, World!');
 });
 
+app.use(cors({
+  origin: [
+    "http://localhost:5173",        // local dev
+    ENV.CLIENT_URL                  // production frontend
+  ],
+  credentials: true
+}));
+app.use(express.json());
 
 const startServer = async () => {
   try {
