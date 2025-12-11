@@ -1,17 +1,10 @@
 import express from 'express';
-import { ENV } from '../lib/env.js';
-import { connectDB } from '../lib/db.js';
+import { ENV } from './lib/env.js';
+import { connectDB } from './lib/db.js';
 import cors from 'cors';
-import { inngest, functions } from '../lib/inngest.js';
+import { inngest, functions } from './lib/inngest.js';
 import { serve } from 'inngest/express';
 const app = express();
-
-
-app.use("/api/inngest",serve({client: inngest,functions}))
-
-app.get('/', (req, res) => {
-  res.send('Hello, World!');
-});
 
 app.use(cors({
   origin: [
@@ -21,6 +14,12 @@ app.use(cors({
   credentials: true
 }));
 app.use(express.json());
+
+app.use("/api/inngest",serve({client: inngest,functions}));
+
+app.get('/', (req, res) => {
+  res.send('Hello, World!');
+});
 
 const startServer = async () => {
   try {
