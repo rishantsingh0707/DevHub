@@ -17,7 +17,8 @@
     "init": "^0.1.2",
     "inngest": "^3.47.0",
     "mongoose": "^9.0.1",
-    "stream": "^0.0.3"
+    "stream": "^0.0.3",
+    "stream-chat": "^9.27.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.11"
