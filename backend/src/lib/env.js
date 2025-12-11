@@ -12,4 +12,6 @@ export const ENV = {
     INNGEST_SIGNING_KEY: process.env.INNGEST_SIGNING_KEY,
     CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
     NODE_ENV: process.env.NODE_ENV,
+    STREAM_API_KEY: process.env.STREAM_API_KEY,
+
 }
