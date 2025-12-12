@@ -1,5 +1,4 @@
 import { StreamClient } from "@stream-io/node-sdk";
-import { StreamChat } from 'stream-chat';
 import { ENV } from "./env.js";
 
 const apiKey = ENV.STREAM_API_KEY;
@@ -10,10 +9,12 @@ if (!apiKey || !apiSecretKey) {
 }
 
 export const chatClient = new StreamClient(apiKey, apiSecretKey);
-export const ChatClient = new StreamChat(apiKey, apiSecretKey);
 
 export const upsertStreamUser = async (userData) => {
   try {
+    // Stream only accepts lowercase user IDs
+    userData.id = userData.id.toLowerCase();
+
     await chatClient.upsertUsers([userData]);
     console.log("User added to Stream:", userData);
   } catch (error) {
@@ -22,7 +23,7 @@ export const upsertStreamUser = async (userData) => {
 };
 
 export const deleteStreamUser = async (userId) => {
-  console.log("Deleting Stream user with ID:", userId);  // DEBUG
+  console.log("Deleting Stream user with ID:", userId);
 
   if (!userId) {
     console.error("Stream delete aborted: userId is missing");
@@ -30,7 +31,7 @@ export const deleteStreamUser = async (userId) => {
   }
 
   try {
-    await chatClient.deleteUsers([userId]);
+    await chatClient.deleteUsers([userId.toLowerCase()]);
     console.log("User deleted from Stream:", userId);
   } catch (error) {
     console.error("Stream delete error:", error);
