@@ -21,15 +21,17 @@ const syncUser = inngest.createFunction(
             userName: `${first_name || ''} ${last_name || ''}`,
             profilePicture: image_url || '',
         }
+        
+        await User.create(newUser)
 
-        await User.create.users(newUser)
+
         await upsertStreamUser({
             id: newUser.clerkId.toString(),
             name: newUser.userName,
             image: newUser.profilePicture
         })
 
-console.log("User synced successfully", newUser)
+        console.log("User synced successfully", newUser)
 
     });
 
