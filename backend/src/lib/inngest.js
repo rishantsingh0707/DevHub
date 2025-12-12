@@ -40,9 +40,9 @@ const deleteUser = inngest.createFunction(
     { event: "clerk/user.deleted" },
 
     async ({ event }) => {
+        await connectDB();
 
-        await connectDB()
-
+        // safely extract the Clerk ID no matter how Clerk sends it
         const clerkId =
             event.data?.id ||
             event.data?.user?.id ||
@@ -55,8 +55,12 @@ const deleteUser = inngest.createFunction(
             return;
         }
 
-        await User.deleteOne({ clerkId })
-        await deleteStreamUser(id.toString())
-    })
+        // delete MongoDB user
+        await User.deleteOne({ clerkId });
+
+        // delete Stream user
+        await deleteStreamUser(clerkId.toString());
+    }
+);
 
 export const functions = [syncUser, deleteUser]
