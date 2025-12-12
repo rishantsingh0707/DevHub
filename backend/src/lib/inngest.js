@@ -55,7 +55,7 @@ const deleteUser = inngest.createFunction(
             return;
         }
 
-        await User.deleteOne({ clerkId: id })
+        await User.deleteOne({ clerkId })
         await deleteStreamUser(id.toString())
     })
 
