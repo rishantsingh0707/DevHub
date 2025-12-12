@@ -21,7 +21,7 @@ const syncUser = inngest.createFunction(
             userName: `${first_name || ''} ${last_name || ''}`,
             profilePicture: image_url || '',
         }
-        
+
         await User.create(newUser)
 
 
@@ -43,7 +43,17 @@ const deleteUser = inngest.createFunction(
 
         await connectDB()
 
-        const { id } = event.data
+        const clerkId =
+            event.data?.id ||
+            event.data?.user?.id ||
+            event.data?.deleted?.id;
+
+        console.log("Deleting Clerk ID:", clerkId);
+
+        if (!clerkId) {
+            console.error("No valid Clerk ID found in delete event:", event.data);
+            return;
+        }
 
         await User.deleteOne({ clerkId: id })
         await deleteStreamUser(id.toString())
