@@ -11,14 +11,21 @@
   },
   "dependencies": {
     "@clerk/clerk-react": "^5.58.1",
+    "@tailwindcss/vite": "^4.1.14",
+    "@tanstack/react-query": "^5.90.5",
+    "axios": "^1.12.2",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "react-hot-toast": "^2.6.0",
+    "react-router": "^7.9.4",
+    "tailwindcss": "^4.1.14"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
     "@types/react": "^19.2.5",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
+    "daisyui": "^5.3.10",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
