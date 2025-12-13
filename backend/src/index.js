@@ -6,6 +6,7 @@ import { clerkMiddleware } from '@clerk/express'
 import { inngest, functions } from './lib/inngest.js';
 import { serve } from 'inngest/express';
 import chatRoute from './routes/chatRoute.js';
+import sessionRoute from './routes/sessionRoute.js';
 const app = express();
 
 app.use(cors({
@@ -29,6 +30,7 @@ app.get('/health', (req, res) => {
 });
 
 app.use("/chat",chatRoute);
+app.use("/session",sessionRoute);
 
 const startServer = async () => {
   try {

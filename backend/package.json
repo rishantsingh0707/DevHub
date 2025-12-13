@@ -12,15 +12,14 @@
   "description": "",
   "dependencies": {
     "@clerk/express": "^1.7.41",
-    "@stream-io/node-sdk": "^0.7.26",
+    "@stream-io/node-sdk": "^0.7.12",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "init": "^0.1.2",
-    "inngest": "^3.47.0",
+    "inngest": "^3.44.3",
     "mongoose": "^9.0.1",
-    "stream": "^0.0.3",
-    "stream-chat": "^9.27.0"
+    "stream-chat": "^9.24.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.11"
