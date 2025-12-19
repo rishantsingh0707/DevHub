@@ -2,7 +2,6 @@ import React from 'react'
 import { getDifficultyBadgeClass } from '../lib/utils.js';
 
 function ProblemDescription({ problems, currentProblemId, onProblemChange, allProblems }) {
-  console.log(problems.description.notes);
 
   return (
     <div className='h-full overflow-y-auto bg-base-200'>
