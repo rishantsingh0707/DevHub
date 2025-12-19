@@ -6,6 +6,12 @@ import ProblemPage from './pages/ProblemPage.jsx';
 import { useUser } from '@clerk/clerk-react';
 
 import { Toaster } from 'react-hot-toast';
+/**
+ * Application root component that conditionally renders routes based on the user's authentication state.
+ *
+ * Renders public and protected routes and a global Toaster; returns `null` while the authentication state is loading.
+ * @returns {JSX.Element|null} The routed application UI when authentication state is available, or `null` while loading.
+ */
 function App() {
 
   const { isSignedIn, isLoaded } = useUser()

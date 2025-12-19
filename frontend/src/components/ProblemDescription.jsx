@@ -1,6 +1,16 @@
 import React from 'react'
 import { getDifficultyBadgeClass } from '../lib/utils.js';
 
+/**
+ * Render a detailed problem viewer with title, difficulty badge, category, description, examples, constraints, and a problem-selection dropdown.
+ *
+ * @param {{ problems: { title: string, difficulty: string, category: string, description: { text: string, notes: string[] }, examples: { input: string, output: string, explanation?: string }[], constraints: string[] }, currentProblemId: string|number, onProblemChange: (id: string|number) => void, allProblems: { id: string|number, title: string }[] }} props - Component props.
+ * @param {object} props.problems - The currently selected problem's data.
+ * @param {string|number} props.currentProblemId - The id of the currently selected problem.
+ * @param {(id: string|number) => void} props.onProblemChange - Callback invoked with a problem id when the selection changes.
+ * @param {{ id: string|number, title: string }[]} props.allProblems - List of available problems for the selection dropdown.
+ * @returns {JSX.Element} The structured problem description UI.
+ */
 function ProblemDescription({ problems, currentProblemId, onProblemChange, allProblems }) {
   console.log(problems.description.notes);
 
