@@ -1,4 +1,3 @@
-
 const PISTON = "https://emkc.org/api/v2/piston"
 
 const LANGUAGE_VERSIONS = {
@@ -8,10 +7,11 @@ const LANGUAGE_VERSIONS = {
 }
 
 /**
- * @param {string} language - programming language
- * @param {string} code - source code to run
- * @returns {Promise<{success: boolean, output ?: string,error?: string}>} - result from Piston API
- */
+ * Execute source code using the Piston execution API.
+ *
+ * @param {string} language - Language key identifying which runtime to use (e.g., "javascript", "python", "java").
+ * @param {string} code - Source code to execute.
+ * @returns {{success: boolean, output?: string, error?: string}} `true` if execution completed without stderr; when `true`, `output` contains the program output (or "no output" if empty). `false` indicates a failure; `error` contains the error message and `output` may contain any captured output.
 
 export async function executeCode(language, code) {
     try {
@@ -50,6 +50,11 @@ export async function executeCode(language, code) {
     }
 }
 
+/**
+ * Get the filename extension associated with a programming language key.
+ * @param {string} language - Language identifier (e.g., "javascript", "python", "java").
+ * @returns {string} The file extension for the language (e.g., "js", "py", "java"), or "txt" if unknown.
+ */
 function getFileExtension(language) {
     const extensions = {
         javascript: "js",

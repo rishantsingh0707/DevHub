@@ -1,5 +1,12 @@
 import React from 'react'
 
+/**
+ * Render a titled panel that displays command output or errors.
+ *
+ * @param {{ output: null | { success: boolean, output?: string, error?: string } }} props - Component props.
+ * @param {null | { success: boolean, output?: string, error?: string }} props.output - If `null`, shows the literal `null`. If an object: when `success` is true shows `output` with success styling; when `success` is false shows `output` (if present) and `error` with error styling.
+ * @returns {JSX.Element} The Output panel component.
+ */
 function OutputPanel({ output }) {
   return (
     <div className='h-full bg-base-100 flex flex-col'>

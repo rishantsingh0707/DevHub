@@ -11,6 +11,14 @@ import confetti from 'canvas-confetti';
 
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 
+/**
+ * Render the problem-solving page with a problem description, code editor, and output panel.
+ *
+ * Keeps the current problem and language in sync with the URL, manages editor state and execution state,
+ * runs user code, normalizes and compares execution output to the problem's expected output,
+ * and provides success/failure feedback (toasts and confetti) based on test results.
+ * @returns {JSX.Element} The rendered ProblemPage component.
+ */
 function ProblemPage() {
   const { id } = useParams()
   const navigate = useNavigate()
