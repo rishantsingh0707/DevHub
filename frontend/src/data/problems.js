@@ -7,8 +7,9 @@ export const PROBLEMS = {
         description: {
             text: "Given an array of integers nums and an integer target, return indices of the two numbers in the array such that they add up to target.",
             notes: [
-                "You may assume that each input would have exactly one solution, and you may not use the same element twice.",
+                "",
                 "You can return the answer in any order.",
+                "You may assume that each input would have exactly one solution, and you may not use the same element twice.",
             ],
         },
         examples: [
@@ -80,7 +81,10 @@ class Solution {
         category: "String • Two Pointers",
         description: {
             text: "Write a function that reverses a string. The input string is given as an array of characters s.",
-            notes: ["You must do this by modifying the input array in-place with O(1) extra memory."],
+            notes: [
+                "",
+                "You must do this by modifying the input array in-place with O(1) extra memory."
+            ],
         },
         examples: [
             {
@@ -152,7 +156,10 @@ class Solution {
         category: "String • Two Pointers",
         description: {
             text: "A phrase is a palindrome if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward. Alphanumeric characters include letters and numbers.",
-            notes: ["Given a string s, return true if it is a palindrome, or false otherwise."],
+            notes: [
+                "",
+                "Given a string s, return true if it is a palindrome, or false otherwise."
+            ],
         },
         examples: [
             {
@@ -286,6 +293,7 @@ print(maxSubArray([5,4,-1,7,8]))  # Expected: 23`,
         description: {
             text: "You are given an integer array height of length n. There are n vertical lines drawn such that the two endpoints of the ith line are (i, 0) and (i, height[i]).",
             notes: [
+                "",
                 "Find two lines that together with the x-axis form a container, such that the container contains the most water.",
                 "Return the maximum amount of water a container can store.",
                 "Notice that you may not slant the container.",
