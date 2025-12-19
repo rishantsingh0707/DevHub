@@ -1,8 +1,10 @@
 import { Navigate, Route, Routes } from 'react-router';
 import HomePage from './pages/HomePage.jsx';
 import DashBoardPage from './pages/DashBoardPage.jsx';
-import { useUser } from '@clerk/clerk-react';
 import ProblemsPage from './pages/ProblemsPage.jsx';
+import ProblemPage from './pages/ProblemPage.jsx';
+import { useUser } from '@clerk/clerk-react';
+
 import { Toaster } from 'react-hot-toast';
 function App() {
 
@@ -18,6 +20,7 @@ function App() {
 
 
         <Route path='/problems' element={isSignedIn ? <ProblemsPage /> : <Navigate to={'/'} />} />
+        <Route path='/problem/:id' element={isSignedIn ? <ProblemPage /> : <Navigate to={'/'} />} />
       </Routes>
 
       <Toaster />
