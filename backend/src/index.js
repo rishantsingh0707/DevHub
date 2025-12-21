@@ -30,7 +30,7 @@ app.get('/health', (req, res) => {
 });
 
 app.use("/chat",chatRoute);
-app.use("/session",sessionRoute);
+app.use("/sessions",sessionRoute);
 
 const startServer = async () => {
   try {

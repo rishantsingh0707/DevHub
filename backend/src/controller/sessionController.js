@@ -4,65 +4,72 @@ import { streamClient, chatClient } from "../lib/stream.js"
 
 export async function createSession(req, res) {
     try {
-
         const { problem, difficulty } = req.body;
         const userId = req.user.id;
-        const clerckId = req.user.clerckId;
+        let clerkId = req.user.clerkId;
 
         if (!problem || !difficulty) {
             return res.status(400).json({ message: "Problem and difficulty are required" });
         }
 
+        if (!clerkId) {
+            console.error("Clerk ID is missing for user:", userId);
+            return res.status(400).json({ message: "Clerk ID is required" });
+        }
+
+        // Ensure clerkId is lowercase (Stream requires lowercase user IDs)
+        clerkId = clerkId.toLowerCase();
         const callId = `session_${Date.now()}_${Math.random().toString(36).substring(7)}`;
 
-        const session = Session.create({
+        // Await the creation of the session
+        const session = await Session.create({
             problem,
             difficulty,
             host: userId,
             callId,
-        })
+        });
 
         // Create a video call using Stream API
         await streamClient.video.call("default", callId).getOrCreate({
             data: {
-                created_by_id: clerckId,
+                created_by_id: clerkId, // Ensure clerckId is valid
                 custom: {
-                    problem, difficulty, sessionId: session._id.toString()
-                }
-            }
+                    problem,
+                    difficulty,
+                    sessionId: session._id.toString(),
+                },
+            },
         });
 
         // Create a chat channel using Stream API
-
         const channel = chatClient.channel("messaging", callId, {
             name: `Session Chat - ${problem}`,
-            created_by_id: clerckId,
-            members: [clerckId],
-        })
+            created_by_id: clerkId,
+            members: [clerkId],
+        });
 
-        await channel.create()
+        await channel.create();
 
         return res.status(201).json({ message: "session created", session });
-
     } catch (error) {
         console.error("Error creating session:", error);
         return res.status(500).json({ message: "error in creating session" });
     }
 };
 
-export async function getActiveSessions(_, res) {
+export async function getActiveSessions(req, res) {
     try {
-        const sessions = Session.find({ status: "active" })
+        const sessions = await Session.find({ status: "active" })
             .populate("host", "name profilePicture")
             .sort({ createdAt: -1 })
             .limit(20);
 
         return res.status(200).json({ sessions });
-
     } catch (error) {
-
+        console.error("Error fetching active sessions:", error);
+        return res.status(500).json({ message: "error in fetching active sessions" });
     }
-};
+}
 
 export async function getMyRecentSessions(req, res) {
     try {
@@ -102,7 +109,7 @@ export async function joinSession(req, res) {
     try {
         const { id } = req.params;
         const userId = req.user.id;
-        const clerckId = req.user.clerckId;
+        const clerkId = req.user.clerkId;
 
         const session = await Session.findById(id);
 
@@ -120,7 +127,7 @@ export async function joinSession(req, res) {
         await session.save();
 
         const channel = chatClient.channel("messaging", session.callId);
-        await channel.addMembers([clerckId]);
+        await channel.addMembers([clerkId]);
 
         return res.status(200).json({ message: "joined session", session });
     } catch (error) {
