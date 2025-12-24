@@ -29,8 +29,8 @@ app.get('/health', (req, res) => {
   res.status(200).send('OK');
 });
 
-app.use("/chat",chatRoute);
-app.use("/sessions",sessionRoute);
+app.use("/chat", chatRoute);
+app.use("/sessions", sessionRoute);
 
 const startServer = async () => {
   try {
