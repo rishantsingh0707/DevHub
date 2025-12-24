@@ -14,7 +14,7 @@ export const protectRoute = [
             if (!user) return res.status(401).json({ message: "Unauthorized" });
 
             req.user = user;
-            console.log(req.user);
+            // console.log("req.user:", req.user);
 
             next();
 

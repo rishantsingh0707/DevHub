@@ -1,5 +1,6 @@
 import Session from "../models/Session.js";
 import { streamClient, chatClient } from "../lib/stream.js"
+import crypto from "crypto";
 
 
 export async function createSession(req, res) {
@@ -19,7 +20,7 @@ export async function createSession(req, res) {
 
         // Ensure clerkId is lowercase (Stream requires lowercase user IDs)
         clerkId = clerkId.toLowerCase();
-        const callId = `session_${Date.now()}_${Math.random().toString(36).substring(7)}`;
+        const callId = `session_${crypto.randomUUID()}`;
 
         // Await the creation of the session
         const session = await Session.create({
@@ -27,6 +28,7 @@ export async function createSession(req, res) {
             difficulty,
             host: userId,
             callId,
+            participants: [],
         });
 
         // Create a video call using Stream API
@@ -48,8 +50,14 @@ export async function createSession(req, res) {
             members: [clerkId],
         });
 
-        await channel.create();
+        await chatClient.upsertUser({
+            id: clerkId,
+            name: req.user.name || "Host",
+            image: req.user.profilePicture || undefined,
+        }
+        );
 
+        await channel.create();
         return res.status(201).json({ message: "session created", session });
     } catch (error) {
         console.error("Error creating session:", error);
@@ -60,10 +68,9 @@ export async function createSession(req, res) {
 export async function getActiveSessions(req, res) {
     try {
         const sessions = await Session.find({ status: "active" })
-            .populate("host", "name profilePicture")
+            .populate("host", "userName profilePicture clerkId")
             .sort({ createdAt: -1 })
             .limit(20);
-
         return res.status(200).json({ sessions });
     } catch (error) {
         console.error("Error fetching active sessions:", error);
@@ -93,8 +100,8 @@ export async function getSessionById(req, res) {
         const { id } = req.params;
 
         const session = await Session.findById(id)
-            .populate("host", "name profilePicture")
-            .populate("participants", "name profilePicture");
+            .populate("host", "userName profilePicture clerkId")
+            .populate("participants", "userName profilePicture clerkId");
 
         if (!session) return res.status(404).json({ message: "session not found" });
 
@@ -109,32 +116,56 @@ export async function joinSession(req, res) {
     try {
         const { id } = req.params;
         const userId = req.user.id;
-        const clerkId = req.user.clerkId;
+        let clerkId = req.user.clerkId.toLowerCase(); // ✅ enforce lowercase
 
         const session = await Session.findById(id);
+        if (!session) {
+            return res.status(404).json({ message: "session not found" });
+        }
 
-        if (!session) return res.status(404).json({ message: "session not found" });
+        if (session.status !== "active") {
+            return res.status(400).json({ message: "cannot join a completed session" });
+        }
 
-        if (!session.status === "active") return res.status(400).json({ message: "cannot join a completed session" });
+        // ✅ correct duplicate check
+        if (session.participants.includes(userId)) {
+            return res.status(200).json({
+                message: "already joined",
+                session,
+            });
+        }
 
-        if (session.participants) return res.status(409).json({ message: "session is full" });
+        if (session.host.toString() === userId.toString()) {
+            return res.status(400).json({ message: "host cannot join as participant" });
+        }
 
-        if (session.participants.includes(userId)) return res.status(400).json({ message: "user already joined" });
+        if (session.participants.length >= 1) {
+            return res.status(409).json({ message: "session is full" });
+        }
 
-        if (session.host.toString() === userId.toString()) return res.status(400).json({ message: "host cannot join as participant" });
+        // ✅ create user in Stream BEFORE adding to channel
+        await chatClient.upsertUser({
+            id: clerkId,
+            name: req.user.name || "User",
+            image: req.user.profilePicture || undefined,
+        });
 
-        session.participants = userId;;
-        await session.save();
+        await Session.findByIdAndUpdate(
+            id,
+            { $addToSet: { participants: userId } },
+            { new: true }
+        );
 
         const channel = chatClient.channel("messaging", session.callId);
-        await channel.addMembers([clerkId]);
+        await channel.addMembers([clerkId])
 
         return res.status(200).json({ message: "joined session", session });
     } catch (error) {
         console.error("Error joining session:", error.message);
         return res.status(500).json({ message: "error in joining session" });
     }
-};
+}
+
 
 export async function endSession(req, res) {
     try {
@@ -164,5 +195,28 @@ export async function endSession(req, res) {
     } catch (error) {
         console.error("Error ending session:", error.message);
         return res.status(500).json({ message: "error in ending session" });
+    }
+}
+
+export async function leaveSession(req, res) {
+    try {
+        const { id } = req.params;
+        const userId = req.user.id;
+        const session = await Session.findById(id);
+
+        const clerkId = req.user.clerkId.toLowerCase();
+        const channel = chatClient.channel("messaging", session.callId);
+
+        await Session.findByIdAndUpdate(
+            id,
+            { $pull: { participants: userId } }
+        );
+
+        await channel.removeMembers([clerkId]);
+
+        return res.status(200).json({ message: "left session" });
+    } catch (err) {
+        console.error("leaveSession error:", err.message);
+        return res.status(500).json({ message: "error leaving session" });
     }
 }

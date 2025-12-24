@@ -2,12 +2,15 @@ import { chatClient } from "../lib/stream.js";
 
 export function getStreamToken(req, res) {
     try {
-        const token = chatClient.createToken(req.user.clerkId);
+        const clerkId = req.user.clerkId.toLowerCase(); // 🔴 REQUIRED
+
+        const token = chatClient.createToken(clerkId);
+
         res.json({
             token,
-            userId: req.user.clerkId,
-            userName: req.user.name,
-            userImage: req.user.profilePicture
+            userId: clerkId,                 // ✅ lowercase
+            userName: req.user.username,     // map from MongoDB
+            userImage: req.user.profilePicture || null
         });
     } catch (error) {
         console.error("Error in getStreamToken:", error);

@@ -1,9 +1,14 @@
 import React from 'react'
-import {ZapIcon,LoaderIcon,Code2Icon,CrownIcon,UsersIcon,SparklesIcon,ArrowRightIcon} from 'lucide-react'
+import { ZapIcon, LoaderIcon, Code2Icon, CrownIcon, UsersIcon, SparklesIcon, ArrowRightIcon } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import {getDifficultyBadgeClass} from '../lib/utils.js'
+import { getDifficultyBadgeClass } from '../lib/utils.js'
 
 function ActiveSessions({ sessions, isLoading, isUserInSession }) {
+  const participantCount = sessions.participants?.length || 0;
+  const totalUsers = 1 + participantCount; // host + participants
+  const isFull = totalUsers >= 2;
+  const userInSession = isUserInSession(sessions);
+
   return (
     <div className="lg:col-span-2 card bg-base-100 border-2 border-primary/20 hover:border-primary/30 h-full">
       <div className="card-body">
@@ -59,36 +64,52 @@ function ActiveSessions({ sessions, isLoading, isUserInSession }) {
                       </div>
                       <div className="flex items-center gap-1.5">
                         <UsersIcon className="size-4" />
-                        <span className="text-xs">{session.participant ? "2/2" : "1/2"}</span>
+                        <span className="text-xs">{totalUsers}/2</span>
+
                       </div>
-                      {session.participant && !isUserInSession(session) ? (
+                      {userInSession ? (
+                        <span className="badge badge-info badge-sm">IN SESSION</span>
+                      ) : isFull ? (
                         <span className="badge badge-error badge-sm">FULL</span>
                       ) : (
                         <span className="badge badge-success badge-sm">OPEN</span>
                       )}
+
                     </div>
                   </div>
                 </div>
 
-                {session.participant && !isUserInSession(session) ? (
+                {userInSession ? (
+                  <Link
+                    to={`/sessions/${session._id}`}
+                    className="btn btn-primary btn-sm gap-2"
+                  >
+                    Rejoin
+                    <ArrowRightIcon className="size-4" />
+                  </Link>
+                ) : isFull ? (
                   <button className="btn btn-disabled btn-sm">Full</button>
                 ) : (
-                  <Link to={`/session/${session._id}`} className="btn btn-primary btn-sm gap-2">
-                    {isUserInSession(session) ? "Rejoin" : "Join"}
+                  <Link
+                    to={`/sessions/${session._id}`}
+                    className="btn btn-primary btn-sm gap-2"
+                  >
+                    Join
                     <ArrowRightIcon className="size-4" />
                   </Link>
                 )}
+
               </div>
             </div>
-            ))
+          ))
           ) : (
-          <div className="text-center py-16">
-            <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-3xl flex items-center justify-center">
-              <SparklesIcon className="w-10 h-10 text-primary/50" />
+            <div className="text-center py-16">
+              <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-3xl flex items-center justify-center">
+                <SparklesIcon className="w-10 h-10 text-primary/50" />
+              </div>
+              <p className="text-lg font-semibold opacity-70 mb-1">No active sessions</p>
+              <p className="text-sm opacity-50">Be the first to create one!</p>
             </div>
-            <p className="text-lg font-semibold opacity-70 mb-1">No active sessions</p>
-            <p className="text-sm opacity-50">Be the first to create one!</p>
-          </div>
           )}
         </div>
       </div>

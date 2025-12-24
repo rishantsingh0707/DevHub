@@ -16,7 +16,7 @@ function DashBoardPage() {
   const [roomConfig, setRoomConfig] = useState({ problem: "", difficulty: "" });
 
   const createSessionMutation = useCreateSession();
-  const {data: ActiveSessionData, isLoading: loadingActiveSessions } = useActiveSessions();
+  const { data: ActiveSessionData, isLoading: loadingActiveSessions } = useActiveSessions();
 
   const { data: RecentSessionData, isLoading: loadingRecentSessions } = useMyRecentSessions();
 
@@ -31,7 +31,7 @@ function DashBoardPage() {
       {
         onSuccess: (data) => {
           setShowCreateModal(false);
-          navigate(`/session/${data.session._id}`);
+          navigate(`/sessions/${data.session._id}`);
         },
       }
     );
@@ -44,7 +44,6 @@ function DashBoardPage() {
 
   const isUserInSession = (session) => {
     if (!user) return false;
-
     return session.host?.clerkId === user.id || session.participants?.clerkId === user.id;
   }
   return (
@@ -77,7 +76,7 @@ function DashBoardPage() {
         roomConfig={roomConfig}
         setRoomConfig={setRoomConfig}
         onCreateSession={handleCreateRoom}
-      // isCreating={createSessionMutation.isPending}
+        isCreating={createSessionMutation.isPending}
       />
     </>
   );

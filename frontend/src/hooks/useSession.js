@@ -2,9 +2,9 @@ import { sessionApi } from '../api/session';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 
-export const useJoinSession = (id) => {
+export const useJoinSession = () => {
     return useMutation({
-        mutationFn: () => sessionApi.joinSession(id),
+        mutationFn: sessionApi.joinSession,
         onSuccess: () => {
             toast.success("Join Room Successfully");
         },
@@ -15,9 +15,9 @@ export const useJoinSession = (id) => {
 };
 
 
-export const useEndSession = (id) => {
+export const useEndSession = () => {
     return useMutation({
-        mutationFn: () => sessionApi.endSession(id),
+        mutationFn: sessionApi.endSession,
         onSuccess: () => {
             toast.success("Ended Session Successfully");
         },
@@ -39,7 +39,6 @@ export const useCreateSession = () => {
         },
     });
 };
-
 
 export const useActiveSessions = () => {
     return useQuery({

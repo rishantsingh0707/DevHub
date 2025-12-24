@@ -1,9 +1,9 @@
+import { ChevronRightIcon, Code2Icon } from 'lucide-react'
+import { Link } from 'react-router'
 import Navbar from '../components/Navbar'
 import { PROBLEMS } from "../data/problems.js"
-import { Link } from 'react-router'
-import { Code2Icon, ChevronRightIcon } from 'lucide-react'
-import { getDifficultyBadgeClass } from '../lib/utils.js'
 import { useActiveSessions } from '../hooks/useSession.js'
+import { getDifficultyBadgeClass } from '../lib/utils.js'
 
 function ProblemsPage() {
   const problems = Object.values(PROBLEMS)
