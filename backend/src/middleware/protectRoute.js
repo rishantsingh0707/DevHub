@@ -5,17 +5,14 @@ export const protectRoute = [
     requireAuth(),
     async (req, res, next) => {
         try {
-            const clerkId = req.auth().userId;
-
-            if (!clerkId) return res.status(401).json({ message: "Unauthorized" });
+            const clerkId = req.auth.userId; // ✅ FIXED
 
             const user = await User.findOne({ clerkId });
-
-            if (!user) return res.status(401).json({ message: "Unauthorized" });
+            if (!user) {
+                return res.status(401).json({ message: "Unauthorized" });
+            }
 
             req.user = user;
-            console.log(req.user);
-
             next();
 
         } catch (error) {
@@ -23,4 +20,4 @@ export const protectRoute = [
             return res.status(500).json({ message: "Server Error" });
         }
     }
-]
+];
