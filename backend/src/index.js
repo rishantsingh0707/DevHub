@@ -11,11 +11,23 @@ const app = express();
 
 app.use(express.json());
 
+const allowedOrigins = [
+  ENV.CLIENT_URL,
+  "http://localhost:5173"
+];
+
 app.use(cors({
-  origin: ENV.CLIENT_URL,
-  credentials: true
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
 }));
 
+app.options("*", cors());
 
 app.use(clerkMiddleware())
 
