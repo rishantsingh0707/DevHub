@@ -1,5 +1,6 @@
 import express from 'express';
 import { protectRoute } from '../middleware/protectRoute.js';
+import { requireAuth } from "@clerk/express";
 import { createSession, getActiveSessions, getMyRecentSessions, getSessionById, joinSession, endSession } from '../controller/sessionController.js';
 const router = express.Router();
 
@@ -9,7 +10,7 @@ router.use((req, res, next) => {
     next();
 });
 
-router.get("/active", protectRoute, getActiveSessions);
+router.get("/active", requireAuth(), getActiveSessions);
 router.get("/my-recent", protectRoute, getMyRecentSessions);
 
 router.get("/:id", protectRoute, getSessionById);
