@@ -4,6 +4,11 @@ import { createSession, getActiveSessions, getMyRecentSessions, getSessionById, 
 const router = express.Router();
 
 router.post('/', protectRoute, createSession);
+router.use((req, res, next) => {
+    console.log("SESSION ROUTE HIT:", req.method, req.originalUrl);
+    next();
+});
+
 router.get("/active", protectRoute, getActiveSessions);
 router.get("/my-recent", protectRoute, getMyRecentSessions);
 
