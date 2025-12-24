@@ -16,7 +16,7 @@ function DashBoardPage() {
   const [roomConfig, setRoomConfig] = useState({ problem: "", difficulty: "" });
 
   const createSessionMutation = useCreateSession();
-  const {data: ActiveSessionData, isLoading: loadingActiveSessions } = useActiveSessions();
+  const { data: ActiveSessionData, isLoading: loadingActiveSessions } = useActiveSessions();
 
   const { data: RecentSessionData, isLoading: loadingRecentSessions } = useMyRecentSessions();
 
@@ -30,6 +30,8 @@ function DashBoardPage() {
       },
       {
         onSuccess: (data) => {
+          console.log("create session response:", data);
+
           setShowCreateModal(false);
           navigate(`/session/${data.session._id}`);
         },

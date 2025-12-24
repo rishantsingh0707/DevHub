@@ -31,10 +31,6 @@ app.use(clerkMiddleware())
 
 app.use("/api/inngest", serve({ client: inngest, functions }));
 
-app.get('/', (req, res) => {
-  res.send('Hello, World!');
-});
-
 app.get('/health', (req, res) => {
   res.status(200).send('OK');
 });

@@ -36,6 +36,7 @@ export const useCreateSession = () => {
         },
         onError: (error) => {
             toast.error(error.response?.data?.message || "Failed to create Session!");
+            console.error("Error creating session:", error);
         },
     });
 };
