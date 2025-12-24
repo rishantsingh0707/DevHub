@@ -19,7 +19,6 @@ app.use(cors({
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
-app.options("*", cors());
 app.use("/api/inngest", serve({ client: inngest, functions }));
 
 app.get('/', (req, res) => {
