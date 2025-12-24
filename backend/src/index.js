@@ -9,16 +9,17 @@ import chatRoute from './routes/chatRoute.js';
 import sessionRoute from './routes/sessionRoute.js';
 const app = express();
 
-app.use(cors({
-  origin: [
-    "http://localhost:5173",        // local dev
-    ENV.CLIENT_URL                  // production frontend
-  ],
-  credentials: true
-}));
 app.use(express.json());
 app.use(clerkMiddleware())
 
+app.use(cors({
+  origin: "https://dev-hub-nu-ten.vercel.app",
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
+
+app.options("*", cors());
 app.use("/api/inngest", serve({ client: inngest, functions }));
 
 app.get('/', (req, res) => {
