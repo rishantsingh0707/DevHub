@@ -73,7 +73,7 @@ function ActiveSessions({ sessions, isLoading, isUserInSession }) {
                 {session.participant && !isUserInSession(session) ? (
                   <button className="btn btn-disabled btn-sm">Full</button>
                 ) : (
-                  <Link to={`/session/${session._id}`} className="btn btn-primary btn-sm gap-2">
+                  <Link to={`/sessions/${session._id}`} className="btn btn-primary btn-sm gap-2">
                     {isUserInSession(session) ? "Rejoin" : "Join"}
                     <ArrowRightIcon className="size-4" />
                   </Link>

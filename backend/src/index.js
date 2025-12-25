@@ -42,11 +42,6 @@ app.use(cors({
   credentials: true,
 }));
 
-
-
-
-app.use(clerkMiddleware())
-
 app.use("/api/inngest", serve({ client: inngest, functions }));
 
 app.get('/health', (req, res) => {

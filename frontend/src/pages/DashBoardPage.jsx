@@ -19,7 +19,6 @@ function DashBoardPage() {
   const { data: ActiveSessionData, isLoading: loadingActiveSessions } = useActiveSessions();
 
   const { data: RecentSessionData, isLoading: loadingRecentSessions } = useMyRecentSessions();
-
   const handleCreateRoom = () => {
     if (!roomConfig.problem || !roomConfig.difficulty) return;
 
@@ -31,9 +30,8 @@ function DashBoardPage() {
       {
         onSuccess: (data) => {
           console.log("create session response:", data);
-
           setShowCreateModal(false);
-          navigate(`/session/${data.session._id}`);
+          navigate(`/sessions/${data.session._id}/join`);
         },
       }
     );
@@ -79,7 +77,7 @@ function DashBoardPage() {
         roomConfig={roomConfig}
         setRoomConfig={setRoomConfig}
         onCreateSession={handleCreateRoom}
-      // isCreating={createSessionMutation.isPending}
+        isCreating={createSessionMutation.isPending}
       />
     </>
   );
