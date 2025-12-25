@@ -23,7 +23,15 @@ app.use(cors({
 
     const normalizedOrigin = origin.replace(/\/$/, "");
 
-    if (allowedOrigins.includes(normalizedOrigin)) {
+    const vercelRegex = /^https:\/\/dev-.*-rishantsingh0707s-projects\.vercel\.app$/;
+    const prodDomain = "https://dev-hub-nu-ten.vercel.app";
+    const isLocalhost = normalizedOrigin === "http://localhost:5173";
+
+    if (
+      normalizedOrigin === prodDomain ||
+      vercelRegex.test(normalizedOrigin) ||
+      isLocalhost
+    ) {
       callback(null, true);
     } else {
       callback(new Error(`Not allowed by CORS: ${origin}`));
@@ -31,6 +39,8 @@ app.use(cors({
   },
   credentials: true,
 }));
+
+
 
 
 app.use(clerkMiddleware())
