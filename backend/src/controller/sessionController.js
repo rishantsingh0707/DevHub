@@ -109,13 +109,14 @@ export async function getSessionById(req, res) {
 export async function joinSession(req, res) {
     console.log("Join Session Params:", req.params);
 
+    const clerkId = req.user.clerkId;
+    const userId = req.user._id;
+    const { id } = req.params;
+    
     if (!id || !mongoose.Types.ObjectId.isValid(id)) {
         return res.status(400).json({ message: "Invalid session id" });
     }
     try {
-        const { id } = req.params;
-        const userId = req.user._id;
-        const clerkId = req.user.clerkId;
 
         const session = await Session.findById(id);
         console.log("PARAM ID:", req.params.id);
