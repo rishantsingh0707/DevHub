@@ -1,10 +1,12 @@
 import mongoose from 'mongoose';
 
 const sessionSchema = new mongoose.Schema({
-    problem: {
-        type: String,
-        required: true,
-    },
+    participants: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+        }
+    ],
     difficulty: {
         type: String,
         enum: ['easy', 'medium', 'hard'],

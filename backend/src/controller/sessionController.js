@@ -132,7 +132,7 @@ export async function joinSession(req, res) {
         if (session.host.toString() === userId.toString()) return res.status(400).json({ message: "host cannot join as participant" });
 
         session.participants.push(userId);
-        
+
         await session.save();
 
         const channel = chatClient.channel("messaging", session.callId);
