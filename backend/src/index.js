@@ -35,6 +35,10 @@ app.get('/health', (req, res) => {
   res.status(200).send('OK');
 });
 
+app.get("/api/sessions/test", (req, res) => {
+  res.json({ ok: true });
+});
+
 app.use("/api/chat", chatRoute);
 app.use("/api/sessions", sessionRoute);
 
