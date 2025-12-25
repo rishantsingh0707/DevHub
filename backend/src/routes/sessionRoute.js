@@ -10,7 +10,7 @@ router.use((req, res, next) => {
     next();
 });
 
-router.get("/active", requireAuth(), getActiveSessions);
+router.get("/active", protectRoute, getActiveSessions);
 router.get("/my-recent", protectRoute, getMyRecentSessions);
 
 router.get("/:id", protectRoute, getSessionById);
