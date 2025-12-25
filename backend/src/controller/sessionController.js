@@ -127,7 +127,7 @@ export async function joinSession(req, res) {
             return res.status(400).json({ message: "cannot join a completed session" });
         }
 
-        if (session.participants.length >= 1) {
+        if (session.participants.length >= 2) {
             return res.status(409).json({ message: "session is full" });
         }
 

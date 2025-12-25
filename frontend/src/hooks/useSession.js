@@ -2,9 +2,9 @@ import { sessionApi } from '../api/session';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 
-export const useJoinSession = () => {
+export const useJoinSession = (id) => {
     return useMutation({
-        mutationFn: (id) => sessionApi.joinSession(id),
+        mutationFn: () => sessionApi.joinSession(id),
         onSuccess: () => {
             toast.success("Join Room Successfully");
         },

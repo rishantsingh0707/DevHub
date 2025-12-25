@@ -33,7 +33,7 @@ function SessionPage() {
         enabled: !!id, // ⬅️ CRITICAL
     });
 
-    const joinSessionMutation = useJoinSession();
+    const joinSessionMutation = useJoinSession(id);
     const endSessionMutation = useEndSession();
 
     const session = sessionData?.session;
