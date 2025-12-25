@@ -108,11 +108,10 @@ export async function getSessionById(req, res) {
 
 export async function joinSession(req, res) {
     console.log("Join Session Params:", req.params);
-
     const clerkId = req.user.clerkId;
     const userId = req.user._id;
     const { id } = req.params;
-    
+
     if (!id || !mongoose.Types.ObjectId.isValid(id)) {
         return res.status(400).json({ message: "Invalid session id" });
     }
@@ -136,7 +135,7 @@ export async function joinSession(req, res) {
             return res.status(400).json({ message: "user already joined" });
         }
 
-        if (session.host.toString() === userId.toString()) return res.status(400).json({ message: "host cannot join as participant" });
+        // if (session.host.toString() === userId.toString()) return res.status(400).json({ message: "host cannot join as participant" });
 
         session.participants.push(userId);
 

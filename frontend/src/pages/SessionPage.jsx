@@ -23,6 +23,7 @@ function SessionPage() {
     const [output, setOutput] = useState(null);
     const [isRunning, setIsRunning] = useState(false);
 
+
     console.log("SESSION PAGE ID:", id);
     const {
         data: sessionData,
@@ -37,7 +38,8 @@ function SessionPage() {
 
     const session = sessionData?.session;
     const isHost = session?.host?.clerkId === user?.id;
-    const isParticipant = session?.participant?.clerkId === user?.id;
+    const isParticipant =
+        session?.participants?.some(p => p.clerkId === user?.id);
 
     const { call, channel, chatClient, isInitializingCall, streamClient } = useStreamClient(
         session,
@@ -55,13 +57,20 @@ function SessionPage() {
     const [code, setCode] = useState(problemData?.starterCode?.[selectedLanguage] || "");
 
     // auto-join session if user is not already a participant and not the host
+    const canAutoJoin =
+        typeof id === "string" &&
+        id !== "undefined" &&
+        !loadingSession &&
+        !!session &&
+        !!user &&
+        !isHost &&
+        !isParticipant;
+
     useEffect(() => {
-        if (!id) return console.log("No session ID provided");                
-        if (!session || !user || loadingSession) return console.log("Waiting for session/user data");
-        if (isHost || isParticipant) return console.log("User is already part of the session"); 
+        if (!canAutoJoin) return;
 
         joinSessionMutation.mutate(id, { onSuccess: refetch });
-    }, [id, session, user, loadingSession, isHost, isParticipant]);
+    }, [canAutoJoin, id, refetch]);
 
     // redirect the "participant" when session ends
     useEffect(() => {
