@@ -16,13 +16,21 @@ import { StreamCall, StreamVideo } from "@stream-io/video-react-sdk";
 import VideoCallUI from "../components/VideoCallUI";
 
 function SessionPage() {
+    
     const navigate = useNavigate();
     const { id } = useParams();
     const { user } = useUser();
     const [output, setOutput] = useState(null);
     const [isRunning, setIsRunning] = useState(false);
-
-    const { data: sessionData, isLoading: loadingSession, refetch } = useSessionById(id);
+    
+    console.log("SESSION PAGE ID:", id);
+    const {
+        data: sessionData,
+        isLoading: loadingSession,
+        refetch,
+    } = useSessionById(id, {
+        enabled: !!id, // ⬅️ CRITICAL
+    });
 
     const joinSessionMutation = useJoinSession();
     const endSessionMutation = useEndSession();
