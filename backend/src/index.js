@@ -7,6 +7,8 @@ import { inngest, functions } from './lib/inngest.js';
 import { serve } from 'inngest/express';
 import chatRoute from './routes/chatRoute.js';
 import sessionRoute from './routes/sessionRoute.js';
+import { getAuth } from "@clerk/express";
+
 const app = express();
 
 app.use(express.json());
@@ -51,9 +53,11 @@ app.get('/health', (req, res) => {
   res.status(200).send('OK');
 });
 
-app.get("/api/sessions/test", (req, res) => {
-  res.json({ ok: true });
+app.get("/api/auth-check", (req, res) => {
+  const auth = getAuth(req);
+  res.json(auth);
 });
+
 
 app.use("/api/chat", chatRoute);
 app.use("/api/sessions", sessionRoute);
