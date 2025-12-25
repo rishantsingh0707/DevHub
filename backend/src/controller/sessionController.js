@@ -1,11 +1,12 @@
 import Session from "../models/Session.js";
 import { streamClient, chatClient } from "../lib/stream.js"
+import mongoose from "mongoose";
 
 
 export async function createSession(req, res) {
     try {
         const { problem, difficulty } = req.body;
-        const userId = req.user.id;
+        const userId = req.user._id;
         let clerkId = req.user.clerkId;
 
         if (!problem || !difficulty) {
@@ -107,6 +108,10 @@ export async function getSessionById(req, res) {
 
 export async function joinSession(req, res) {
     console.log("Join Session Params:", req.params);
+
+    if (!id || !mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message: "Invalid session id" });
+    }
     try {
         const { id } = req.params;
         const userId = req.user._id;
@@ -149,7 +154,7 @@ export async function joinSession(req, res) {
 export async function endSession(req, res) {
     try {
         const { id } = req.params;
-        const userId = req.user.id;
+        const userId = req.user._id;
 
         const session = await Session.findById(id);
 

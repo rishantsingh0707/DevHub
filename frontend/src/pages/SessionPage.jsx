@@ -56,9 +56,9 @@ function SessionPage() {
 
     // auto-join session if user is not already a participant and not the host
     useEffect(() => {
-        if (!id) return console.log("No session ID provided");                 // 🔒 CRITICAL
-        if (!session || !user || loadingSession) return console.log("Waiting for session/user data"); // 🔒 CRITICAL
-        if (isHost || isParticipant) return console.log("User is already part of the session"); // 🔒 CRITICAL
+        if (!id) return console.log("No session ID provided");                
+        if (!session || !user || loadingSession) return console.log("Waiting for session/user data");
+        if (isHost || isParticipant) return console.log("User is already part of the session"); 
 
         joinSessionMutation.mutate(id, { onSuccess: refetch });
     }, [id, session, user, loadingSession, isHost, isParticipant]);
