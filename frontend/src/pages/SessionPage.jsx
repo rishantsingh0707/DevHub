@@ -16,13 +16,13 @@ import { StreamCall, StreamVideo } from "@stream-io/video-react-sdk";
 import VideoCallUI from "../components/VideoCallUI";
 
 function SessionPage() {
-    
+
     const navigate = useNavigate();
     const { id } = useParams();
     const { user } = useUser();
     const [output, setOutput] = useState(null);
     const [isRunning, setIsRunning] = useState(false);
-    
+
     console.log("SESSION PAGE ID:", id);
     const {
         data: sessionData,
@@ -56,13 +56,12 @@ function SessionPage() {
 
     // auto-join session if user is not already a participant and not the host
     useEffect(() => {
-        if (!session || !user || loadingSession) return;
-        if (isHost || isParticipant) return;
+        if (!id) return console.log("No session ID provided");                 // 🔒 CRITICAL
+        if (!session || !user || loadingSession) return console.log("Waiting for session/user data"); // 🔒 CRITICAL
+        if (isHost || isParticipant) return console.log("User is already part of the session"); // 🔒 CRITICAL
 
         joinSessionMutation.mutate(id, { onSuccess: refetch });
-
-        // remove the joinSessionMutation, refetch from dependencies to avoid infinite loop
-    }, [session, user, loadingSession, isHost, isParticipant, id]);
+    }, [id, session, user, loadingSession, isHost, isParticipant]);
 
     // redirect the "participant" when session ends
     useEffect(() => {

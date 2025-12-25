@@ -107,6 +107,7 @@ export async function getSessionById(req, res) {
 
 export async function joinSession(req, res) {
     try {
+        console.log("Join Session Params:", req.params);
         const { id } = req.params;
         const userId = req.user.id;
         const clerkId = req.user.clerkId;

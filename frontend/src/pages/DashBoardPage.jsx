@@ -31,7 +31,7 @@ function DashBoardPage() {
         onSuccess: (data) => {
           console.log("create session response:", data);
           setShowCreateModal(false);
-          navigate(`/sessions/${data.session._id}/join`);
+          navigate(`/sessions/${data.session._id}`);
         },
       }
     );
