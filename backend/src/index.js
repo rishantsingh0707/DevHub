@@ -13,19 +13,25 @@ app.use(express.json());
 
 const allowedOrigins = [
   ENV.CLIENT_URL,
+  "https://dev-hub-nu-ten.vercel.app",
   "http://localhost:5173"
 ];
 
 app.use(cors({
   origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (!origin) return callback(null, true);
+
+    const normalizedOrigin = origin.replace(/\/$/, "");
+
+    if (allowedOrigins.includes(normalizedOrigin)) {
       callback(null, true);
     } else {
-      callback(new Error("Not allowed by CORS"));
+      callback(new Error(`Not allowed by CORS: ${origin}`));
     }
   },
   credentials: true,
 }));
+
 
 app.use(clerkMiddleware())
 
