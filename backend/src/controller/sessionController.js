@@ -73,6 +73,8 @@ export async function getActiveSessions(req, res) {
 }
 
 export async function getMyRecentSessions(req, res) {
+    console.log("🔥 getMyRecentSessions HIT");
+
     try {
         const userId = req.user._id;
 
@@ -91,6 +93,7 @@ export async function getMyRecentSessions(req, res) {
         return res.status(500).json({ message: "error in fetching recent sessions" });
     }
 }
+
 
 export async function getSessionById(req, res) {
     try {
@@ -132,6 +135,10 @@ export async function joinSession(req, res) {
 
         if (session.participants.length >= 2) {
             return res.status(409).json({ message: "session is full" });
+        }
+
+        if (session.participants.includes(userId)) {
+            return res.status(200).json({ message: "already joined", session });
         }
 
         session.participants.push(userId);

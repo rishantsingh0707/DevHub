@@ -249,7 +249,7 @@ function SessionPage() {
                                 </div>
                             </Panel>
 
-                            <PanelResizeHandle className="h-2 bg-base-300 hover:bg-primary transition-colors cursor-row-resize" />
+                            <PanelResizeHandle className="h-1 bg-base-300 hover:bg-primary transition-colors cursor-row-resize" />
 
                             <Panel defaultSize={50} minSize={20}>
                                 <PanelGroup direction="vertical">
@@ -264,7 +264,7 @@ function SessionPage() {
                                         />
                                     </Panel>
 
-                                    <PanelResizeHandle className="h-2 bg-base-300 hover:bg-primary transition-colors cursor-row-resize" />
+                                    <PanelResizeHandle className="h-1 bg-base-300 hover:bg-primary transition-colors cursor-row-resize" />
 
                                     <Panel defaultSize={30} minSize={15}>
                                         <OutputPanel output={output} />
@@ -274,7 +274,7 @@ function SessionPage() {
                         </PanelGroup>
                     </Panel>
 
-                    <PanelResizeHandle className="w-2 bg-base-300 hover:bg-primary transition-colors cursor-col-resize" />
+                    <PanelResizeHandle className="w-1 bg-base-300 hover:bg-primary transition-colors cursor-col-resize" />
 
                     {/* RIGHT PANEL - VIDEO CALLS & CHAT */}
                     <Panel defaultSize={50} minSize={30}>
