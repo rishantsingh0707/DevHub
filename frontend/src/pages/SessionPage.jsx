@@ -38,6 +38,7 @@ function SessionPage() {
 
     const session = sessionData?.session;
     const isHost = session?.host?.clerkId === user?.id;
+    
     const isParticipant =
         session?.participants?.some(p => p.clerkId === user?.id);
 
@@ -110,6 +111,17 @@ function SessionPage() {
             endSessionMutation.mutate(id, { onSuccess: () => navigate("/dashboard") });
         }
     };
+
+    useEffect(() => {
+        console.log("Is Host:", isHost);
+        console.log("Session Status:", session?.status);
+        console.log("Session Data:", session);
+    }, [isHost, session]);
+
+    useEffect(() => {
+        console.log("User ID:", user?.id);
+        console.log("Host Clerk ID:", session?.host?.clerkId);
+    }, [user, session]);
 
     return (
         <div className="h-screen bg-base-100 flex flex-col">

@@ -61,7 +61,7 @@ export async function createSession(req, res) {
 export async function getActiveSessions(req, res) {
     try {
         const sessions = await Session.find({ status: "active" })
-            .populate("host", "name profilePicture")
+            .populate("host", "name profilePicture clerkId")
             .sort({ createdAt: -1 })
             .limit(20);
 
@@ -94,8 +94,8 @@ export async function getSessionById(req, res) {
         const { id } = req.params;
 
         const session = await Session.findById(id)
-            .populate("host", "name profilePicture")
-            .populate("participants", "name profilePicture");
+            .populate("host", "name profilePicture clerkId")
+            .populate("participants", "name profilePicture clerkId");
 
         if (!session) return res.status(404).json({ message: "session not found" });
 
@@ -127,22 +127,18 @@ export async function joinSession(req, res) {
             return res.status(400).json({ message: "cannot join a completed session" });
         }
 
-        if (session.participants.length >= 2) {
-            return res.status(409).json({ message: "session is full" });
-        }
-
-        if (session.participants.some(p => p.toString() === userId.toString())) {
-            return res.status(400).json({ message: "user already joined" });
-        }
-
-        // if (session.host.toString() === userId.toString()) return res.status(400).json({ message: "host cannot join as participant" });
+        todo: "handle duplicate joins"
+        // if (session.participants.length >= 2) {
+        //     return res.status(409).json({ message: "session is full" });
+        // }
 
         session.participants.push(userId);
 
         await session.save();
 
         const channel = chatClient.channel("messaging", session.callId);
-        await channel.addMembers([clerkId]);
+
+        await channel.addMembers([req.user.clerkId.toLowerCase()]);
 
         return res.status(200).json({ message: "joined session", session });
     } catch (error) {

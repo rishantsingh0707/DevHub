@@ -44,8 +44,8 @@ app.use(cors({
 
 app.use("/api/inngest", serve({ client: inngest, functions }));
 
-app.get('/health', (req, res) => {
-  res.status(200).send('OK');
+app.use('/health', (req, res) => {
+  res.status(200).send('OK clei');
 });
 
 app.get("/api/auth-check", (req, res) => {

@@ -2,22 +2,20 @@ import { sessionApi } from '../api/session';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 
-export const useJoinSession = (id) => {
-    return useMutation({
-        mutationFn: () => sessionApi.joinSession(id),
-        onSuccess: () => {
-            toast.success("Join Room Successfully");
-        },
-        onError: (error) => {
-            toast.error(error.response?.data?.message || "Unable to join Room");
-        },
+export const useJoinSession = () => {
+    const result = useMutation({
+        mutationKey: ["joinSession"],
+        mutationFn: sessionApi.joinSession,
+        onSuccess: () => toast.success("Joined session successfully!"),
+        onError: (error) => toast.error(error.response?.data?.message || "Failed to join session"),
     });
+
+    return result;
 };
 
-
-export const useEndSession = (id) => {
+export const useEndSession = () => {
     return useMutation({
-        mutationFn: () => sessionApi.endSession(id),
+        mutationFn: (id) => sessionApi.endSession(id),
         onSuccess: () => {
             toast.success("Ended Session Successfully");
         },
