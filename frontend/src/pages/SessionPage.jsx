@@ -109,14 +109,6 @@ function SessionPage() {
         }
     };
 
-    useEffect(() => {
-        console.log("Is Host:", isHost);
-        console.log("Session Status:", session?.status);
-        console.log("Session Data:", session);
-        console.log("host name", session?.host?.userName);
-        console.log("problem data", problemData)
-    }, [isHost, session]);
-
     return (
         <div className="h-screen bg-base-100 flex flex-col">
             <Navbar />

@@ -13,7 +13,6 @@ function App() {
   const { isSignedIn, isLoaded } = useUser()
   if (!isLoaded) return null;
 
-  console.log(isSignedIn)
   return (
     <>
       <Routes>
