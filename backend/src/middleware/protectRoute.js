@@ -1,30 +1,37 @@
-import { requireAuth } from "@clerk/express";
-import User from "../models/User.js";
-import { console } from "inspector";
-
 export const protectRoute = [
     requireAuth(),
     async (req, res, next) => {
         try {
-            console.log("AUTH:", req.headers.authorization);
-            console.log("COOKIE:", req.headers.cookie);
-            
-            const clerkId = req.auth.userId;
+            const clerkId = req.auth().userId;
 
             if (!clerkId) {
                 return res.status(401).json({ message: "Unauthorized" });
             }
 
-            const user = await User.findOne({ clerkId });
+            let user = await User.findOne({ clerkId });
+
+            // 🔑 FALLBACK CREATION (fixes race condition)
             if (!user) {
-                return res.status(401).json({ message: "Unauthorized" });
+                user = await User.create({
+                    clerkId,
+                    email: req.auth().sessionClaims?.email,
+                    userName: req.auth().sessionClaims?.name || "User",
+                    profilePicture: req.auth().sessionClaims?.picture || "",
+                });
+
+                // optional but recommended
+                await upsertStreamUser({
+                    id: clerkId.toLowerCase(),
+                    name: user.userName,
+                    image: user.profilePicture,
+                });
             }
 
             req.user = user;
             next();
-        } catch (err) {
-            console.error("Auth error:", err);
-            return res.status(401).json({ message: "Unauthorized" });
+        } catch (error) {
+            console.error("protectRoute error:", error);
+            return res.status(500).json({ message: "Server Error" });
         }
     },
 ];
