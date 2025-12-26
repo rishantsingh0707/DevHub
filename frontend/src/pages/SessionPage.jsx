@@ -22,9 +22,6 @@ function SessionPage() {
     const { user } = useUser();
     const [output, setOutput] = useState(null);
     const [isRunning, setIsRunning] = useState(false);
-
-
-    console.log("SESSION PAGE ID:", id);
     const {
         data: sessionData,
         isLoading: loadingSession,
@@ -38,7 +35,7 @@ function SessionPage() {
 
     const session = sessionData?.session;
     const isHost = session?.host?.clerkId === user?.id;
-    
+
     const isParticipant =
         session?.participants?.some(p => p.clerkId === user?.id);
 
@@ -116,12 +113,9 @@ function SessionPage() {
         console.log("Is Host:", isHost);
         console.log("Session Status:", session?.status);
         console.log("Session Data:", session);
+        console.log("host name", session?.host?.userName);
+        console.log("problem data", problemData)
     }, [isHost, session]);
-
-    useEffect(() => {
-        console.log("User ID:", user?.id);
-        console.log("Host Clerk ID:", session?.host?.clerkId);
-    }, [user, session]);
 
     return (
         <div className="h-screen bg-base-100 flex flex-col">
@@ -145,12 +139,12 @@ function SessionPage() {
                                                 {problemData?.category && (
                                                     <p className="text-base-content/60 mt-1">{problemData.category}</p>
                                                 )}
-                                                <p className="text-base-content/60 mt-2">
-                                                    Host: {session?.host?.name || "Loading..."} •{" "}
-                                                    {session?.participant ? 2 : 1}/2 participants
-                                                </p>
                                             </div>
 
+                                                <p className="text-base-content/60 mt-2">
+                                                    Host: {session?.host?.userName || "Loading..."} •{" "}
+                                                    {session?.participants ? 2 : 1}/2 participants
+                                                </p>
                                             <div className="flex items-center gap-3">
                                                 <span
                                                     className={`badge badge-lg ${getDifficultyBadgeClass(

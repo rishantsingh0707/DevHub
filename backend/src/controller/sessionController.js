@@ -61,7 +61,7 @@ export async function createSession(req, res) {
 export async function getActiveSessions(req, res) {
     try {
         const sessions = await Session.find({ status: "active" })
-            .populate("host", "name profilePicture clerkId")
+            .populate("host", "userName profilePicture clerkId")
             .sort({ createdAt: -1 })
             .limit(20);
 
@@ -76,26 +76,29 @@ export async function getMyRecentSessions(req, res) {
     try {
         const userId = req.user._id;
 
-        const sessions = Session.find({
-            status: "completed",
-            $or: [{ host: userId }, { participants: userId }]
-        }).limit(20).sort({ createdAt: -1 });
+        const sessions = await Session.find({
+            $or: [
+                { host: userId },
+                { participants: userId },
+            ],
+        })
+            .sort({ updatedAt: -1 })
+            .limit(20);
 
         return res.status(200).json({ sessions });
-
     } catch (error) {
         console.error("Error fetching recent sessions:", error.message);
         return res.status(500).json({ message: "error in fetching recent sessions" });
     }
-};
+}
 
 export async function getSessionById(req, res) {
     try {
         const { id } = req.params;
 
         const session = await Session.findById(id)
-            .populate("host", "name profilePicture clerkId")
-            .populate("participants", "name profilePicture clerkId");
+            .populate("host", "userName profilePicture clerkId")
+            .populate("participants", "userName profilePicture clerkId");
 
         if (!session) return res.status(404).json({ message: "session not found" });
 

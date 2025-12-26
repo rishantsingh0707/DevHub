@@ -3,6 +3,7 @@ import { getDifficultyBadgeClass } from "../lib/utils";
 import { formatDistanceToNow } from "date-fns";
 
 function RecentSessions({ sessions, isLoading }) {
+  console.log("RecentSessions sessions:", sessions);
   return (
     <div className="card bg-base-100 border-2 border-accent/20 hover:border-accent/30 mt-8">
       <div className="card-body">
@@ -23,8 +24,8 @@ function RecentSessions({ sessions, isLoading }) {
               <div
                 key={session._id}
                 className={`card relative ${session.status === "active"
-                    ? "bg-success/10 border-success/30 hover:border-success/60"
-                    : "bg-base-200 border-base-300 hover:border-primary/30"
+                  ? "bg-success/10 border-success/30 hover:border-success/60"
+                  : "bg-base-200 border-base-300 hover:border-primary/30"
                   }`}
               >
                 {session.status === "active" && (
@@ -40,8 +41,8 @@ function RecentSessions({ sessions, isLoading }) {
                   <div className="flex items-start gap-3 mb-4">
                     <div
                       className={`w-12 h-12 rounded-xl flex items-center justify-center ${session.status === "active"
-                          ? "bg-gradient-to-br from-success to-success/70"
-                          : "bg-gradient-to-br from-primary to-secondary"
+                        ? "bg-gradient-to-br from-success to-success/70"
+                        : "bg-gradient-to-br from-primary to-secondary"
                         }`}
                     >
                       <Code2 className="w-6 h-6 text-white" />
@@ -68,8 +69,8 @@ function RecentSessions({ sessions, isLoading }) {
                     <div className="flex items-center gap-2">
                       <Users className="w-4 h-4" />
                       <span>
-                        {session.participant ? "2" : "1"} participant
-                        {session.participant ? "s" : ""}
+                        {1 + (session.participants?.length || 0)} participant
+                        {1 + (session.participants?.length || 0) > 1 ? "s" : ""}
                       </span>
                     </div>
                   </div>
