@@ -127,10 +127,9 @@ export async function joinSession(req, res) {
             return res.status(400).json({ message: "cannot join a completed session" });
         }
 
-        todo: "handle duplicate joins"
-        // if (session.participants.length >= 2) {
-        //     return res.status(409).json({ message: "session is full" });
-        // }
+        if (session.participants.length >= 2) {
+            return res.status(409).json({ message: "session is full" });
+        }
 
         session.participants.push(userId);
 
