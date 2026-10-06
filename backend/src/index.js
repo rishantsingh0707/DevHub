@@ -42,6 +42,10 @@ app.use(cors({
   credentials: true,
 }));
 
+app.use(clerkMiddleware({
+  publishableKey: ENV.CLERK_PUBLISHABLE_KEY,
+}));
+
 app.use("/api/inngest", serve({ client: inngest, functions }));
 
 app.use('/health', (req, res) => {
